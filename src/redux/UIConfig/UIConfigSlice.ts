@@ -8,11 +8,9 @@ interface UIConfigState {
 }
 
 // const initialTheme = 'light';
-const dir = localStorage.getItem('direction');
-console.log('diiiir is ', dir);
 
 const initialState: UIConfigState = {
-  dir: dir,
+  dir: 'ltr',
   lang: 'en',
   //   theme: initialTheme,
 };

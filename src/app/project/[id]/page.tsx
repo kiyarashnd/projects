@@ -1,6 +1,9 @@
 'use client';
-import datas from '../../data/db.json';
+// import datas from '../../../data/db.json';
+import enDatas from '../../../data/db.json';
+import fnDatas from '../../../data/fndb.json';
 import Image from 'next/image';
+import { useAppSelector } from '../../../hooks/useRedux';
 
 type Props = {
   params: {
@@ -9,12 +12,15 @@ type Props = {
 };
 
 const ProjectTemplate = (props: Props) => {
-  console.log(typeof props.params.id);
-  const myData = datas.find((data) => String(data.id) === props.params.id);
+  // const { lang } = useAppSelector((state) => state.uiConfig);
+  let lang = localStorage.getItem('lang');
+
+  const mainData = lang === 'en' ? enDatas : fnDatas;
+
+  const myData = mainData.find((data) => String(data.id) === props.params.id);
 
   return (
     <>
-      {/* <h1>project Tmeplate fo id of {`${props.params.id}`}</h1> */}
       <h2 className='mt-3 text-4xl flex justify-center'>{myData?.title}</h2>
       <Image
         className='mx-auto my-4'
@@ -24,10 +30,6 @@ const ProjectTemplate = (props: Props) => {
         height={600}
       />
       <p className='w-[80%] mx-auto text-xl mb-4'>{myData?.body}</p>
-
-      <footer className='bg-gray-400 flex justify-center py-10'>
-        {myData?.footer}
-      </footer>
     </>
   );
 };
