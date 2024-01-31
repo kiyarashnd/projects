@@ -3,7 +3,6 @@
 import { Box, Container, Flex, Strong, Text } from '@radix-ui/themes';
 import logo from '../../public/logo.png';
 import uni from '../../public/University.png';
-import Image from 'next/image';
 import { FormattedMessage } from 'react-intl';
 
 const Home = () => {
@@ -17,7 +16,7 @@ const Home = () => {
         className='!bg-[#4f772d] h-[15rem]'
       >
         <Box>
-          <Image
+          <img
             src={logo.src}
             alt='logo'
             width={100}
@@ -43,7 +42,7 @@ const Home = () => {
           </Text>
         </Box>
         <Box>
-          <Image
+          <img
             src={uni.src}
             alt='logo'
             width={100}

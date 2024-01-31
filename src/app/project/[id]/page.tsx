@@ -2,7 +2,6 @@
 // import datas from '../../../data/db.json';
 import enDatas from '../../../data/db.json';
 import fnDatas from '../../../data/fndb.json';
-import Image from 'next/image';
 import { useAppSelector } from '../../../hooks/useRedux';
 
 type Props = {
@@ -21,7 +20,7 @@ const ProjectTemplate = (props: Props) => {
   return (
     <>
       <h2 className='mt-3 text-4xl flex justify-center'>{myData?.title}</h2>
-      <Image
+      <img
         className='mx-auto my-4'
         src={`${myData?.src}`}
         alt={`${myData?.title}`}

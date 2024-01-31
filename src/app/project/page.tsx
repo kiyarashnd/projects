@@ -3,9 +3,7 @@ import { Grid, Heading, HoverCard, Link, Strong, Text } from '@radix-ui/themes';
 import enDatas from '../../data/db.json';
 import fnDatas from '../../data/fndb.json';
 
-import Image from 'next/image';
 import { FormattedMessage } from 'react-intl';
-import { useEffect, useState } from 'react';
 import { useAppSelector } from '@/hooks/useRedux';
 
 type DataObject = {
@@ -44,7 +42,7 @@ export default function Home() {
                   >
                     {data.title}
                   </Text>
-                  <Image
+                  <img
                     src={data.src}
                     alt={data.title}
                     width={400}
