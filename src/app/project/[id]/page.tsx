@@ -12,9 +12,8 @@ type Props = {
 };
 
 const ProjectTemplate = (props: Props) => {
-  // const { lang } = useAppSelector((state) => state.uiConfig);
-  let lang = localStorage.getItem('lang');
-
+  const { dir } = useAppSelector((state) => state.uiConfig);
+  const lang = dir === 'ltr' ? 'en' : 'fa';
   const mainData = lang === 'en' ? enDatas : fnDatas;
 
   const myData = mainData.find((data) => String(data.id) === props.params.id);

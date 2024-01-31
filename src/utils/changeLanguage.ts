@@ -6,7 +6,9 @@ type TDirections = 'ltr' | 'rtl';
 export const changeLanguage = (dir: TDirections) => {
   //we want to update the state dir :
   store.dispatch(uiConfigSlice.actions.setDir(dir));
-  localStorage.setItem('direction', JSON.parse(JSON.stringify(dir)));
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('direction', JSON.parse(JSON.stringify(dir)));
+  }
 
   if (dir === 'ltr') {
     store.dispatch(uiConfigSlice.actions.setLang('en'));

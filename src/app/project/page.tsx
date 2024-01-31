@@ -5,8 +5,8 @@ import fnDatas from '../../data/fndb.json';
 
 import Image from 'next/image';
 import { FormattedMessage } from 'react-intl';
-import { useAppSelector } from '../../hooks/useRedux';
 import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/hooks/useRedux';
 
 type DataObject = {
   id: number;
@@ -17,17 +17,13 @@ type DataObject = {
 };
 
 export default function Home() {
-  // const { lang } = useAppSelector((state) => state.uiConfig);
-  const [lang, setLang] = useState('');
-  useEffect(() => {
-    setLang(`${localStorage.getItem('lang')}`);
-  }, []);
+  const { dir } = useAppSelector((state) => state.uiConfig);
+  const lang = dir === 'ltr' ? 'en' : 'fa';
   const mainData = lang === 'en' ? enDatas : fnDatas;
 
   return (
     <section>
       <Heading className='flex justify-center text-4xl text-[#132a13] py-5'>
-        {/* projects */}
         <FormattedMessage defaultMessage={'Projects'} id='header.projects' />
       </Heading>
       <Grid columns='3' gap='5' width='auto'>

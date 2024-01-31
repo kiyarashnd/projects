@@ -8,9 +8,13 @@ interface UIConfigState {
 }
 
 // const initialTheme = 'light';
+const dir =
+  typeof window !== 'undefined'
+    ? window.localStorage.getItem('direction')
+    : false;
 
 const initialState: UIConfigState = {
-  dir: (localStorage.getItem('direction') as Direction) || 'ltr',
+  dir: (dir as Direction) || 'ltr',
   lang: 'en',
   //   theme: initialTheme,
 };

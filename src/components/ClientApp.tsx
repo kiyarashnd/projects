@@ -10,7 +10,6 @@ import { Text } from '@radix-ui/themes';
 
 export default function ClientApp(props: { children: ReactNode }) {
   const { dir } = useAppSelector((state) => state.uiConfig);
-  // const dir = localStorage.getItem('direction');
   const lang = dir === 'ltr' ? 'en' : 'fa';
   const [messages, setMessages] = useState({});
 
@@ -18,10 +17,9 @@ export default function ClientApp(props: { children: ReactNode }) {
     import(`@/lang/${lang}.json`).then((messages) => {
       setMessages(messages);
     });
-  }, [dir]);
-
-  const body = document.body;
-  body?.setAttribute('dir', `${dir}`);
+    const body = document.body;
+    body?.setAttribute('dir', `${dir}`);
+  }, [lang]);
 
   return (
     <DirectionProvider dir={dir}>
