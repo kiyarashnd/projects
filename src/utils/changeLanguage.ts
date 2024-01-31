@@ -10,12 +10,7 @@ export const changeLanguage = (dir: TDirections) => {
 
   if (dir === 'ltr') {
     store.dispatch(uiConfigSlice.actions.setLang('en'));
-    localStorage.setItem('lang', JSON.parse(JSON.stringify('en')));
   } else if (dir === 'rtl') {
     store.dispatch(uiConfigSlice.actions.setLang('fa'));
-    localStorage.setItem('lang', JSON.parse(JSON.stringify('fa')));
   }
-
-  // const body = document.body;
-  // body?.setAttribute('dir', dir);
 };

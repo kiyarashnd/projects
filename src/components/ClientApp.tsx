@@ -10,30 +10,29 @@ import { Text } from '@radix-ui/themes';
 
 export default function ClientApp(props: { children: ReactNode }) {
   const { dir } = useAppSelector((state) => state.uiConfig);
+  // const dir = localStorage.getItem('direction');
+  const lang = dir === 'ltr' ? 'en' : 'fa';
   const [messages, setMessages] = useState({});
-  const [firstDir, setFirstDir] = useState(localStorage.getItem('direction'));
-  const [firstLang, setFirstLang] = useState(localStorage.getItem('lang'));
 
   useEffect(() => {
-    setFirstDir(localStorage.getItem('direction'));
-    setFirstLang(localStorage.getItem('lang'));
-    import(`@/lang/${firstLang}.json`).then((messages) => {
+    import(`@/lang/${lang}.json`).then((messages) => {
       setMessages(messages);
     });
-  }, [firstLang]);
+  }, [dir]);
 
   const body = document.body;
-  body?.setAttribute('dir', `${firstDir}`);
+  body?.setAttribute('dir', `${dir}`);
 
   return (
     <DirectionProvider dir={dir}>
       <IntlProvider
-        locale={`${firstLang}`}
+        locale={`${lang}`}
         defaultLocale='en'
-        key={firstLang}
+        key={lang}
         messages={messages}
       >
-        <Theme appearance='dark'>
+        {/* <Theme appearance='dark'> */}
+        <Theme>
           <Navbar />
           {props.children}
           <footer className='bg-gray-400 flex justify-center py-9 mt-10'>

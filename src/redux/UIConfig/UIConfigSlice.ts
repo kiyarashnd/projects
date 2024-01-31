@@ -10,7 +10,7 @@ interface UIConfigState {
 // const initialTheme = 'light';
 
 const initialState: UIConfigState = {
-  dir: 'ltr',
+  dir: (localStorage.getItem('direction') as Direction) || 'ltr',
   lang: 'en',
   //   theme: initialTheme,
 };
