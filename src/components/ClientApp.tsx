@@ -19,7 +19,7 @@ export default function ClientApp(props: { children: ReactNode }) {
     });
     const body = document.body;
     body?.setAttribute('dir', `${dir}`);
-  }, [lang]);
+  }, [lang, dir]);
 
   return (
     <DirectionProvider dir={dir}>
