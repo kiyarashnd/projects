@@ -10,15 +10,17 @@ import ScheduleTable from '@/components/table/page';
 const Home = () => {
   return (
     <>
-      <Flex
+      {/* <Flex
         gap={'0'}
         justify={'center'}
         pt={'6'}
         pb={'6'}
         className='!bg-[#4f772d] h-[15rem]'
-      >
+      > */}
+      <div className='w-full'>
         <ScheduleTable />
-        <Box>
+      </div>
+      {/* <Box>
           <Image
             src={logo.src}
             alt='logo'
@@ -83,7 +85,7 @@ const Home = () => {
           international journals and conferences in the field of Computational
           Biology, Bioinformatics and Data Science.
         </Text>
-      </Container>
+      </Container> */}
     </>
   );
 };

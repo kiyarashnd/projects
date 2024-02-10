@@ -1,14 +1,13 @@
 // components/ScheduleTable.tsx
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
-// Define a type for the schedule state
 type ScheduleState = {
   [day: string]: {
     [time: string]: boolean;
   };
 };
 
-const daysOfWeek: string[] = ['ج', 'س', 'چ', 'پ', 'د', 'ی', 'ش'];
+const daysOfWeek: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const timesOfDay: string[] = [
   '8:00',
   '9:00',
@@ -22,54 +21,69 @@ const timesOfDay: string[] = [
   '17:00',
   '18:00',
   '19:00',
-  '20:00',
-  '21:00',
-  '22:00',
-  '23:00',
-  '24:00',
 ];
 
 const ScheduleTable: React.FC = () => {
   const [schedule, setSchedule] = useState<ScheduleState>({});
-  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [isSelecting, setIsSelecting] = useState<boolean>(false);
 
-  const toggleTimeSlot = useCallback((day: string, time: string): void => {
-    setSchedule((prevSchedule) => ({
-      ...prevSchedule,
-      [day]: {
-        ...prevSchedule[day],
-        [time]: !prevSchedule[day]?.[time],
-      },
-    }));
-  }, []);
+  const getCellId = (day: string, time: string): string => {
+    return `${day}-${time}`;
+  };
 
-  const handleTouch = useCallback(
-    (day: string, time: string): void => {
-      if (isDragging) {
-        toggleTimeSlot(day, time);
+  const handleSelectionStart = (day: string, time: string) => {
+    setIsSelecting(true);
+    // Initialize the day in the schedule if it does not exist
+    if (!schedule[day]) {
+      setSchedule((prevSchedule) => ({
+        ...prevSchedule,
+        [day]: {},
+      }));
+    }
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLTableElement>) => {
+    if (!isSelecting) return;
+
+    // Get the touch location
+    const touch = event.touches[0];
+    const element = document.elementFromPoint(
+      touch.clientX,
+      touch.clientY
+    ) as HTMLElement;
+
+    if (element && element.dataset.type === 'selectable') {
+      const day = element.dataset.day;
+      const time = element.dataset.time;
+      if (day && time) {
+        setSchedule((prevSchedule) => ({
+          ...prevSchedule,
+          [day]: {
+            ...prevSchedule[day],
+            [time]: true, // Set the cell as selected
+          },
+        }));
       }
-    },
-    [isDragging, toggleTimeSlot]
-  );
+    }
+  };
 
-  const startDragging = useCallback(
-    (day: string, time: string): void => {
-      setIsDragging(true);
-      toggleTimeSlot(day, time);
-    },
-    [toggleTimeSlot]
-  );
+  const handleSelectionEnd = () => {
+    setIsSelecting(false);
+  };
 
-  const stopDragging = useCallback((): void => {
-    setIsDragging(false);
-  }, []);
+  console.log('schedule is : ', schedule);
 
   return (
     <div className='overflow-x-auto'>
-      <table className='table-fixed border-collapse bg-white'>
+      <table
+        className='table-fixed border-collapse bg-white'
+        onTouchStart={(e) => e.preventDefault()} // Prevents page scrolling when dragging starts
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleSelectionEnd}
+      >
         <thead>
           <tr>
-            <th className='w-16 p-2'></th> {/* Empty corner cell */}
+            <th className='w-16 p-2'></th>
             {daysOfWeek.map((day) => (
               <th key={day} className='p-2 bg-purple-200 border'>
                 {day}
@@ -84,12 +98,13 @@ const ScheduleTable: React.FC = () => {
               {daysOfWeek.map((day) => (
                 <td
                   key={day}
+                  data-type='selectable'
+                  data-day={day}
+                  data-time={time}
+                  onTouchStart={() => handleSelectionStart(day, time)}
                   className={`p-2 border cursor-pointer ${
                     schedule[day]?.[time] ? 'bg-purple-400' : 'bg-purple-100'
                   }`}
-                  onTouchStart={() => startDragging(day, time)}
-                  onTouchMove={() => handleTouch(day, time)}
-                  onTouchEnd={stopDragging}
                 >
                   {/* Cell content here */}
                 </td>
