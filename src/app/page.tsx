@@ -120,7 +120,7 @@ const timesOfDay: string[] = [
   '24:00',
 ];
 
-const ScheduleTable: React.FC = () => {
+const ScheduleTable = () => {
   const [schedule, setSchedule] = useState<ScheduleState>({});
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
