@@ -7,7 +7,7 @@ type ScheduleState = {
   };
 };
 
-const daysOfWeek: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const daysOfWeek: string[] = ['د', 'س', 'چ', 'پ', 'ج', 'ش', 'ی'];
 const timesOfDay: string[] = [
   '8:00',
   '9:00',
@@ -21,15 +21,20 @@ const timesOfDay: string[] = [
   '17:00',
   '18:00',
   '19:00',
+  '20:00',
+  '21:00',
+  '22:00',
+  '23:00',
+  '24:00',
 ];
 
 const ScheduleTable: React.FC = () => {
   const [schedule, setSchedule] = useState<ScheduleState>({});
   const [isSelecting, setIsSelecting] = useState<boolean>(false);
 
-  const getCellId = (day: string, time: string): string => {
-    return `${day}-${time}`;
-  };
+  // const getCellId = (day: string, time: string): string => {
+  // 	return `${day}-${time}`;
+  // };
 
   const handleSelectionStart = (day: string, time: string) => {
     setIsSelecting(true);
@@ -85,7 +90,10 @@ const ScheduleTable: React.FC = () => {
           <tr>
             <th className='w-16 p-2'></th>
             {daysOfWeek.map((day) => (
-              <th key={day} className='p-2 bg-purple-200 border'>
+              <th
+                key={day}
+                className='p-3 bg-purple-700 border border-purple-700 text-white'
+              >
                 {day}
               </th>
             ))}
@@ -94,7 +102,7 @@ const ScheduleTable: React.FC = () => {
         <tbody>
           {timesOfDay.map((time) => (
             <tr key={time}>
-              <td className='p-2 bg-purple-200 border'>{time}</td>
+              <td className='p-2'>{time}</td>
               {daysOfWeek.map((day) => (
                 <td
                   key={day}
