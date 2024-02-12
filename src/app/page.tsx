@@ -5,22 +5,18 @@ import logo from '../../public/logo.png';
 import uni from '../../public/University.png';
 import { FormattedMessage } from 'react-intl';
 import Image from 'next/image';
-import ScheduleTable from '@/components/table/page';
 
 const Home = () => {
   return (
     <>
-      {/* <Flex
+      <Flex
         gap={'0'}
         justify={'center'}
         pt={'6'}
         pb={'6'}
         className='!bg-[#4f772d] h-[15rem]'
-      > */}
-      <div className='w-full'>
-        <ScheduleTable />
-      </div>
-      {/* <Box>
+      >
+        <Box>
           <Image
             src={logo.src}
             alt='logo'
@@ -85,7 +81,7 @@ const Home = () => {
           international journals and conferences in the field of Computational
           Biology, Bioinformatics and Data Science.
         </Text>
-      </Container> */}
+      </Container>
     </>
   );
 };
