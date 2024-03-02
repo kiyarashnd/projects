@@ -132,7 +132,7 @@ const ScheduleTable: React.FC = () => {
         className='table-fixed border-collapse border-blue-600 bg-white border-spacing-y-4'
         // onTouchStart={handletouchs} // Prevents page scrolling when dragging starts
         // onTouchStart={handleTouchStart}
-        // ref={tableRef}
+        ref={tableRef}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleSelectionEnd}
       >
