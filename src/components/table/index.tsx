@@ -124,13 +124,15 @@ const ScheduleTable: React.FC = () => {
     };
   }, []); // Empty dependency array ensures this runs on mount and unmount only
 
+  console.log('schedule is : ', schedule);
+
   return (
     <div className='overflow-x-auto'>
       <table
         className='table-fixed border-collapse border-blue-600 bg-white border-spacing-y-4'
         // onTouchStart={handletouchs} // Prevents page scrolling when dragging starts
         // onTouchStart={handleTouchStart}
-        ref={tableRef}
+        // ref={tableRef}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleSelectionEnd}
       >
