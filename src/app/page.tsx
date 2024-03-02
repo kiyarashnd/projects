@@ -6,11 +6,19 @@ import uni from '../../public/University.png';
 import { FormattedMessage } from 'react-intl';
 import Image from 'next/image';
 import ScheduleTable from '@/components/table';
-
+import { useState } from 'react';
+type ScheduleState = {
+  [day: string]: {
+    [time: string]: boolean;
+  };
+};
 const Home = () => {
+  const [schedule, setSchedule] = useState<ScheduleState>({});
+
   return (
     <>
-      <ScheduleTable />
+      <ScheduleTable schedule={schedule} setSchedule={setSchedule} />
+
       {/* <Flex
         gap={'0'}
         justify={'center'}

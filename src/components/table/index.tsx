@@ -1,14 +1,19 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { Text } from '@radix-ui/themes';
 
 type ScheduleState = {
   [day: string]: {
     [time: string]: boolean;
   };
 };
+interface TableProps {
+  schedule: ScheduleState;
+  setSchedule: React.Dispatch<React.SetStateAction<ScheduleState>>;
+}
 
-const daysOfWeek: string[] = ['د', 'س', 'چ', 'پ', 'ج', 'ش', 'ی'];
+const daysOfWeek: string[] = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
 const timesOfDay: string[] = [
   '8:00',
   '9:00',
@@ -29,37 +34,31 @@ const timesOfDay: string[] = [
   '24:00',
 ];
 
-const ScheduleTable: React.FC = () => {
-  const [schedule, setSchedule] = useState<ScheduleState>({});
-  const [isSelecting, setIsSelecting] = useState<boolean>(false);
+const ScheduleTable: React.FC<TableProps> = ({ schedule, setSchedule }) => {
   const [lastToggled, setLastToggled] = useState<{
     day: string;
     time: string;
   } | null>(null);
 
-  const handleSelectionStart = (day: string, time: string) => {
-    setIsSelecting(true);
-    // Initialize the day in the schedule if it does not exist
-    if (!schedule[day]) {
-      setSchedule((prevSchedule) => ({
-        ...prevSchedule,
-        [day]: {},
-      }));
-    }
+  const [firstToggled, setFirstToggled] = useState<{
+    day: string;
+    time: string;
+  } | null>(null);
 
-    // Toggle the selected state of the cell
+  const handleSelectionStart = (day: string, time: string) => {
+    // Initialize the day in the schedule
     setSchedule((prevSchedule) => ({
       ...prevSchedule,
       [day]: {
         ...prevSchedule[day],
-        [time]: !prevSchedule[day]?.[time], // Toggle the selected state
+        [time]: !prevSchedule[day]?.[time],
       },
     }));
+    setFirstToggled({ day, time });
   };
 
   const handleTouchMove = (event: React.TouchEvent<HTMLTableElement>) => {
-    if (!isSelecting) return;
-
+    //here we get element that touched with date and time data set
     const touch = event.touches[0];
     const element = document.elementFromPoint(
       touch.clientX,
@@ -69,6 +68,7 @@ const ScheduleTable: React.FC = () => {
     if (element && element.dataset.type === 'selectable') {
       const day = element.dataset.day;
       const time = element.dataset.time;
+
       if (day && time) {
         if (
           !lastToggled ||
@@ -76,15 +76,32 @@ const ScheduleTable: React.FC = () => {
           lastToggled.time !== time
         ) {
           setSchedule((prevSchedule) => {
-            const isSelected = prevSchedule[day]?.[time] || false;
-            return {
-              ...prevSchedule,
-              [day]: {
-                ...prevSchedule[day],
-                [time]: !isSelected,
-              },
-            };
+            //below if says if item that you start darggin is like just last item that you dragging in your first try change color of that to purple
+            if (
+              firstToggled &&
+              firstToggled.day === day &&
+              firstToggled.time === time
+            ) {
+              return {
+                ...prevSchedule,
+                [day]: {
+                  ...prevSchedule[day],
+                  [time]: true,
+                },
+              };
+            } else {
+              //below code say if prevSchedule[day]?.[time] is undefined means is white set it false
+              const isSelected = prevSchedule[day]?.[time] || false;
+              return {
+                ...prevSchedule,
+                [day]: {
+                  ...prevSchedule[day],
+                  [time]: !isSelected,
+                },
+              };
+            }
           });
+
           setLastToggled({ day, time });
         }
       }
@@ -94,17 +111,15 @@ const ScheduleTable: React.FC = () => {
   const tableRef = useRef<HTMLTableElement>(null);
 
   const handleSelectionEnd = () => {
-    setIsSelecting(false);
     setLastToggled(null);
   };
-
-  // console.log("schedule is : ", schedule);
 
   useEffect(() => {
     // Define the function inside the effect so it has access to the state
     const handleTouchStart = (event: TouchEvent) => {
       // Prevent scrolling
       event.preventDefault();
+      // console.log("you touched me!", event.target);
       // ... (logic to handle touch start)
     };
 
@@ -124,42 +139,40 @@ const ScheduleTable: React.FC = () => {
     };
   }, []); // Empty dependency array ensures this runs on mount and unmount only
 
-  console.log('schedule is : ', schedule);
-
   return (
-    <div className='overflow-x-auto'>
+    <div className='overflow-x-auto w-[90%]'>
       <table
         className='table-fixed border-collapse border-blue-600 bg-white border-spacing-y-4'
-        // onTouchStart={handletouchs} // Prevents page scrolling when dragging starts
         // onTouchStart={handleTouchStart}
-        ref={tableRef}
+        ref={tableRef} // Prevents page scrolling when dragging starts
         onTouchMove={handleTouchMove}
         onTouchEnd={handleSelectionEnd}
       >
-        <thead
-          // className={`after:content-[' '] aftre:block after:h-[12rem] after:w-full after:bg-white`}
-          className='mb-6'
-        >
+        <thead className='mb-6'>
           <tr>
             <th className='p-2'></th>
             {daysOfWeek.map((day) => (
               <th
                 key={day}
-                className='!w-[7rem] py-2 bg-[var(--accent-9)] border border-[var(--accent-9)] text-white 
-								ast:!rounded-tl-lg 
-								border-t-0
-								'
+                className={`${
+                  day === 'ش' ? '!rounded-tr-xl' : ''
+                } !w-[7rem] py-2 bg-[var(--accent-9)] border border-[var(--accent-9)] text-white 
+								last:!rounded-tl-xl
+								border-t-0 border-l-0 border-r-0 
+								`}
               >
-                {day}
+                <Text size='3' weight='regular'>
+                  {day}
+                </Text>
               </th>
             ))}
           </tr>
+          <tr className='w-full h-4'></tr>
         </thead>
-        {/* <div className="w-full h-4"></div> */}
         <tbody>
           {timesOfDay.map((time) => (
             <tr key={time}>
-              <td className='py-2'>{time}</td>
+              <td className='pb-4 -translate-y-3'>{time}</td>
               {daysOfWeek.map((day) => (
                 <td
                   key={day}
