@@ -1,19 +1,16 @@
-'use client';
-
 import { GetStaticPaths, GetStaticProps } from 'next';
 import mainData from '../../../data/db.json';
 import fnDatas from '../../../data/fndb.json';
-// Include other necessary imports here
 
 type ProjectData = {
-  id: number; // or string, adjust according to your data structure
+  id: number;
   title: string;
   src: string;
   body: string;
 };
 
 type ProjectTemplateProps = {
-  myData?: ProjectData; // Make it optional to handle cases where data might not be found
+  myData?: ProjectData;
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {

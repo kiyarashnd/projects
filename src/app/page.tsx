@@ -17,9 +17,9 @@ const Home = () => {
 
   return (
     <>
-      <ScheduleTable schedule={schedule} setSchedule={setSchedule} />
+      {/* <ScheduleTable schedule={schedule} setSchedule={setSchedule} /> */}
 
-      {/* <Flex
+      <Flex
         gap={'0'}
         justify={'center'}
         pt={'6'}
@@ -91,7 +91,7 @@ const Home = () => {
           international journals and conferences in the field of Computational
           Biology, Bioinformatics and Data Science.
         </Text>
-      </Container> */}
+      </Container>
     </>
   );
 };
