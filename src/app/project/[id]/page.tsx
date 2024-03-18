@@ -1,3 +1,5 @@
+'use client';
+
 import { GetStaticPaths, GetStaticProps } from 'next';
 import mainData from '../../../data/db.json';
 import fnDatas from '../../../data/fndb.json';

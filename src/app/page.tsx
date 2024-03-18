@@ -5,7 +5,6 @@ import logo from '../../public/logo.png';
 import uni from '../../public/University.png';
 import { FormattedMessage } from 'react-intl';
 import Image from 'next/image';
-import ScheduleTable from '@/components/table';
 import { useState } from 'react';
 type ScheduleState = {
   [day: string]: {
