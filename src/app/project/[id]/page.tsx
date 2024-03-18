@@ -1,35 +1,60 @@
-// 'use client';
-// import datas from '../../../data/db.json';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import mainData from '../../../data/db.json';
 import fnDatas from '../../../data/fndb.json';
-import { useAppSelector } from '../../../hooks/useRedux';
+// Include other necessary imports here
 
-type Props = {
-  params: {
-    id: string;
-  };
+type ProjectData = {
+  id: number; // or string, adjust according to your data structure
+  title: string;
+  src: string;
+  body: string;
 };
 
-export const generateStaticParams = () => [];
+type ProjectTemplateProps = {
+  myData?: ProjectData; // Make it optional to handle cases where data might not be found
+};
 
-const ProjectTemplate = (props: Props) => {
-  // const { dir } = useAppSelector((state) => state.uiConfig);
-  // const lang = dir === 'ltr' ? 'en' : 'fa';
-  // const mainData = lang === 'en' ? enDatas : fnDatas;
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = mainData.map((data) => ({
+    params: { id: String(data.id) },
+  }));
 
-  const myData = mainData.find((data) => String(data.id) === props.params.id);
+  return { paths, fallback: 'blocking' };
+};
+
+export const getStaticProps: GetStaticProps<
+  ProjectTemplateProps,
+  { id: string }
+> = async (context) => {
+  const id = context.params?.id;
+  const myData = mainData.find((data) => String(data.id) === id);
+
+  // If we couldn't find the data, return a 404
+  if (!myData) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return { props: { myData } };
+};
+
+const ProjectTemplate: React.FC<ProjectTemplateProps> = ({ myData }) => {
+  if (!myData) {
+    return <div>No data found</div>; // Fallback content or a 404 page can be rendered here
+  }
 
   return (
     <>
-      <h2 className='mt-3 text-4xl flex justify-center'>{myData?.title}</h2>
+      <h2 className='mt-3 text-4xl flex justify-center'>{myData.title}</h2>
       <img
         className='mx-auto my-4'
-        src={`${myData?.src}`}
-        alt={`${myData?.title}`}
+        src={myData.src}
+        alt={myData.title}
         width={600}
         height={600}
       />
-      <p className='w-[80%] mx-auto text-xl mb-4'>{myData?.body}</p>
+      <p className='w-[80%] mx-auto text-xl mb-4'>{myData.body}</p>
     </>
   );
 };
